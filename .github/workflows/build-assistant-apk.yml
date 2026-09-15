@@ -19,6 +19,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install Android NDK
         run: |
           echo "y" | sdkmanager --install "ndk;26.1.10909125"
