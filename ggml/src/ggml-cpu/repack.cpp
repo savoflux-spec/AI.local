@@ -4278,6 +4278,14 @@ template <> int repack<block_q6_K, 8, 8>(struct ggml_tensor * t, const void * da
     return repack_q6_K_to_q6_K_8_bl(t, 8, data, data_size);
 }
 
+template <> int repack<block_q1_0, 4, 4>(struct ggml_tensor * t, const void * data, size_t data_size) {
+    return repack_q1_0_to_q1_0_4_bl(t, 4, data, data_size);
+}
+
+template <> int repack<block_q1_0, 8, 4>(struct ggml_tensor * t, const void * data, size_t data_size) {
+    return repack_q1_0_to_q1_0_4_bl(t, 8, data, data_size);
+}
+
 template <> int repack<block_iq4_nl, 4, 4>(struct ggml_tensor * t, const void * data, size_t data_size) {
     return repack_iq4_nl_to_iq4_nl_4_bl(t, 4, data, data_size);
 }
@@ -4305,14 +4313,6 @@ template <> int repack<block_q8_0, 4, 4>(struct ggml_tensor * t, const void * da
 
 template <> int repack<block_q8_0, 8, 4>(struct ggml_tensor * t, const void * data, size_t data_size) {
     return repack_q8_0_to_q8_0_4_bl(t, 8, data, data_size);
-}
-
-template <> int repack<block_q1_0, 4, 4>(struct ggml_tensor * t, const void * data, size_t data_size) {
-    return repack_q1_0_to_q1_0_4_bl(t, 4, data, data_size);
-}
-
-template <> int repack<block_q1_0, 8, 4>(struct ggml_tensor * t, const void * data, size_t data_size) {
-    return repack_q1_0_to_q1_0_4_bl(t, 8, data, data_size);
 }
 
 #if defined __riscv_zvfh
@@ -4396,6 +4396,14 @@ template <> void gemv<block_iq4_nl, 8, 8, GGML_TYPE_Q8_0>(int n, float * s, size
     ggml_gemv_iq4_nl_8x8_q8_0(n, s, bs, vx, vy, nr, nc);
 }
 
+template <> void gemv<block_q1_0, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
+    ggml_gemv_q1_0_4x4_q8_0(n, s, bs, vx, vy, nr, nc);
+}
+
+template <> void gemv<block_q1_0, 8, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
+    ggml_gemv_q1_0_4x8_q8_0(n, s, bs, vx, vy, nr, nc);
+}
+
 template <> void gemv<block_mxfp4, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
     ggml_gemv_mxfp4_4x4_q8_0(n, s, bs, vx, vy, nr, nc);
 }
@@ -4410,14 +4418,6 @@ template <> void gemv<block_q8_0, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t
 
 template <> void gemv<block_q8_0, 8, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
     ggml_gemv_q8_0_4x8_q8_0(n, s, bs, vx, vy, nr, nc);
-}
-
-template <> void gemv<block_q1_0, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
-    ggml_gemv_q1_0_4x4_q8_0(n, s, bs, vx, vy, nr, nc);
-}
-
-template <> void gemv<block_q1_0, 8, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
-    ggml_gemv_q1_0_4x8_q8_0(n, s, bs, vx, vy, nr, nc);
 }
 
 #if defined __riscv_zvfh
@@ -4493,6 +4493,14 @@ template <> void gemm<block_q6_K, 8, 8, GGML_TYPE_Q8_K>(int n, float * s, size_t
     ggml_gemm_q6_K_8x8_q8_K(n, s, bs, vx, vy, nr, nc);
 }
 
+template <> void gemm<block_q1_0, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
+    ggml_gemm_q1_0_4x4_q8_0(n, s, bs, vx, vy, nr, nc);
+}
+
+template <> void gemm<block_q1_0, 8, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
+    ggml_gemm_q1_0_4x8_q8_0(n, s, bs, vx, vy, nr, nc);
+}
+
 template <> void gemm<block_iq4_nl, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
     ggml_gemm_iq4_nl_4x4_q8_0(n, s, bs, vx, vy, nr, nc);
 }
@@ -4515,14 +4523,6 @@ template <> void gemm<block_q8_0, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t
 
 template <> void gemm<block_q8_0, 8, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
     ggml_gemm_q8_0_4x8_q8_0(n, s, bs, vx, vy, nr, nc);
-}
-
-template <> void gemm<block_q1_0, 4, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
-    ggml_gemm_q1_0_4x4_q8_0(n, s, bs, vx, vy, nr, nc);
-}
-
-template <> void gemm<block_q1_0, 8, 4, GGML_TYPE_Q8_0>(int n, float * s, size_t bs, const void * vx, const void * vy, int nr, int nc) {
-    ggml_gemm_q1_0_4x8_q8_0(n, s, bs, vx, vy, nr, nc);
 }
 
 #if defined __riscv_zvfh
@@ -4940,6 +4940,10 @@ static const ggml::cpu::tensor_traits * ggml_repack_get_optimal_repack_type(cons
     static const ggml::cpu::repack::tensor_traits<block_q6_K, 4, 8, GGML_TYPE_Q8_K> q6_K_8x4_q8_K;
     static const ggml::cpu::repack::tensor_traits<block_q6_K, 8, 8, GGML_TYPE_Q8_K> q6_K_8x8_q8_K;
 
+    // instance for Q1_0
+    static const ggml::cpu::repack::tensor_traits<block_q1_0, 4, 4, GGML_TYPE_Q8_0> q1_0_4x4_q8_0;
+    static const ggml::cpu::repack::tensor_traits<block_q1_0, 8, 4, GGML_TYPE_Q8_0> q1_0_4x8_q8_0;
+
     // instance for Q2
     static const ggml::cpu::repack::tensor_traits<block_q2_K, 8, 8, GGML_TYPE_Q8_K> q2_K_8x8_q8_K;
 
@@ -4954,10 +4958,6 @@ static const ggml::cpu::tensor_traits * ggml_repack_get_optimal_repack_type(cons
     // instance for Q8_0
     static const ggml::cpu::repack::tensor_traits<block_q8_0, 4, 4, GGML_TYPE_Q8_0> q8_0_4x4_q8_0;
     static const ggml::cpu::repack::tensor_traits<block_q8_0, 8, 4, GGML_TYPE_Q8_0> q8_0_4x8_q8_0;
-
-    // instance for Q1_0
-    static const ggml::cpu::repack::tensor_traits<block_q1_0, 4, 4, GGML_TYPE_Q8_0> q1_0_4x4_q8_0;
-    static const ggml::cpu::repack::tensor_traits<block_q1_0, 8, 4, GGML_TYPE_Q8_0> q1_0_4x8_q8_0;
 
     // instances for RISC-V
     //
